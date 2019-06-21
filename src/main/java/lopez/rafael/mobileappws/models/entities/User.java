@@ -1,17 +1,29 @@
-package lopez.rafael.mobileappws.models.dtos;
+package lopez.rafael.mobileappws.models.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.Serializable;
 
-public class UserDto implements Serializable {
-
-    private static final long serialVersionUID = 4865903039190150223L;
+@Entity
+public class User implements Serializable {
+    private static final long serialVersionUID = 3865903039190150223L;
+    @Id
+    @GeneratedValue
     private long id;
+    @Column(nullable = false)
+    private String userId;
+    @Column(nullable = false, length = 50)
     private String firstName;
+    @Column(nullable = false, length = 50)
     private String lastName;
+    @Column(nullable = false, length = 120)
     private String email;
-    private String password;
+    @Column(nullable = false)
     private String encryptedPassword;
     private String emailVerificationToken;
+    @Column(nullable = false)
     private boolean emailVerificationStatus = false;
 
     public long getId() {
@@ -20,6 +32,14 @@ public class UserDto implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {
@@ -46,14 +66,6 @@ public class UserDto implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEncryptedPassword() {
         return encryptedPassword;
     }
@@ -70,7 +82,7 @@ public class UserDto implements Serializable {
         this.emailVerificationToken = emailVerificationToken;
     }
 
-    public boolean getEmailVerificationStatus() {
+    public boolean isEmailVerificationStatus() {
         return emailVerificationStatus;
     }
 
