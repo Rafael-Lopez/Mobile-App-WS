@@ -6,6 +6,7 @@ import lopez.rafael.mobileappws.models.dtos.UserDto;
 import lopez.rafael.mobileappws.services.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -13,10 +14,12 @@ import java.util.UUID;
 @Service
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -30,7 +33,7 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(userDto, user);
 
         user.setUserId(UUID.randomUUID().toString());
-        user.setEncryptedPassword("test");
+        user.setEncryptedPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
 
         user = userRepository.save(user);
 
