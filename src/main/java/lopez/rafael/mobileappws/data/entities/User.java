@@ -1,4 +1,4 @@
-package lopez.rafael.mobileappws.models.entities;
+package lopez.rafael.mobileappws.data.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
