@@ -8,6 +8,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
@@ -19,10 +21,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserDto userDto) {
+
+        if( userRepository.findByEmail(userDto.getEmail()) != null ){
+            throw new RuntimeException("Record already exists!");
+        }
+
         User user = new User();
         BeanUtils.copyProperties(userDto, user);
 
-        user.setUserId("testUserId");
+        user.setUserId(UUID.randomUUID().toString());
         user.setEncryptedPassword("test");
 
         user = userRepository.save(user);
