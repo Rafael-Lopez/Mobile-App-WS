@@ -46,6 +46,7 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    //Method used automatically by Spring for user authentication
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email);
@@ -53,6 +54,6 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException(email);
         }
 
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getEncryptedPassword(), new ArrayList<>());
+        return new org.springframework.security.core.userdetails.User( user.getEmail(), user.getEncryptedPassword(), new ArrayList<>() );
     }
 }
