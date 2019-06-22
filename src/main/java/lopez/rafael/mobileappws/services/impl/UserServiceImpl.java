@@ -46,6 +46,20 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Override
+    public UserDto getUser(String email) {
+        User user = userRepository.findByEmail(email);
+
+        if(user == null){
+            throw new UsernameNotFoundException(email);
+        }
+
+        UserDto result = new UserDto();
+        BeanUtils.copyProperties(user, result);
+
+        return result;
+    }
+
     //Method used automatically by Spring for user authentication
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
