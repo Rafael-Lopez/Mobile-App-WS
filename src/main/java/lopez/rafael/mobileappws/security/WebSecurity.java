@@ -22,7 +22,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception{
         http.csrf().disable().authorizeRequests()
                 .mvcMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL)
-                .permitAll().anyRequest().authenticated().and().addFilter(getAuthenticationFilter());
+                .permitAll()
+                .anyRequest().authenticated().and()
+                .addFilter(getAuthenticationFilter())
+                .addFilter(new AuthorizationFilter(authenticationManager()));
                 //Replacing this line to customize login URL
                 //.permitAll().anyRequest().authenticated().and().addFilter(new AuthenticationFilter(authenticationManager()));
     }
