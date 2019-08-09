@@ -1,4 +1,4 @@
-package lopez.rafael.mobileappws.models.responses.exceptions;
+package lopez.rafael.mobileappws.exceptions;
 
 public class UserServiceException extends RuntimeException{
     public UserServiceException(String message) {

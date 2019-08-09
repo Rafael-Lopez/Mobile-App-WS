@@ -4,7 +4,7 @@ import lopez.rafael.mobileappws.models.dtos.UserDto;
 import lopez.rafael.mobileappws.models.requests.UserDetailsRequestModel;
 import lopez.rafael.mobileappws.models.responses.ErrorMesages;
 import lopez.rafael.mobileappws.models.responses.UserRest;
-import lopez.rafael.mobileappws.models.responses.exceptions.UserServiceException;
+import lopez.rafael.mobileappws.exceptions.UserServiceException;
 import lopez.rafael.mobileappws.services.impl.UserServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
