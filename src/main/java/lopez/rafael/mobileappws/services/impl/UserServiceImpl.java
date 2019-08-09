@@ -60,6 +60,20 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Override
+    public UserDto getUserByUserId(String userId) {
+        UserDto returnValue = new UserDto();
+        User user = userRepository.findByUserId(userId);
+
+        if(user == null){
+            throw new UsernameNotFoundException(userId);
+        }
+
+        BeanUtils.copyProperties(user, returnValue);
+
+        return returnValue;
+    }
+
     //Method used automatically by Spring for user authentication
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
