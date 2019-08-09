@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUserId(userId);
 
         if(user == null){
-            throw new UsernameNotFoundException(userId);
+            throw new UsernameNotFoundException("User with ID: " + userId + " not found");
         }
 
         BeanUtils.copyProperties(user, returnValue);
@@ -92,6 +92,16 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(updateUser, returnValue);
 
         return returnValue;
+    }
+
+    @Override
+    public void deleteUser(String userId) {
+        User oldUser = userRepository.findByUserId(userId);
+        if(oldUser == null){
+            throw new UserServiceException(ErrorMesages.NO_RECORD_FOUND.getErrorMessage());
+        }
+
+        userRepository.delete(oldUser);
     }
 
     //Method used automatically by Spring for user authentication

@@ -2,8 +2,7 @@ package lopez.rafael.mobileappws.controllers;
 
 import lopez.rafael.mobileappws.models.dtos.UserDto;
 import lopez.rafael.mobileappws.models.requests.UserDetailsRequestModel;
-import lopez.rafael.mobileappws.models.responses.ErrorMesages;
-import lopez.rafael.mobileappws.models.responses.UserRest;
+import lopez.rafael.mobileappws.models.responses.*;
 import lopez.rafael.mobileappws.exceptions.UserServiceException;
 import lopez.rafael.mobileappws.services.impl.UserServiceImpl;
 import org.springframework.beans.BeanUtils;
@@ -63,8 +62,17 @@ public class UserController {
         return returnValue;
     }
 
-    @DeleteMapping
-    public String deleteUser(){
-        return "deleteUser was called";
+    @DeleteMapping( path = "/{id}",
+                    consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE },
+                    produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE } )
+    public OperationStatusModel deleteUser(@PathVariable String id){
+        OperationStatusModel returnValue = new OperationStatusModel();
+        returnValue.setOperationName(RequestOperationName.DELETE.name());
+
+        userService.deleteUser(id);
+
+        returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+
+        return returnValue;
     }
 }
