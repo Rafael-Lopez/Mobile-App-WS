@@ -2,7 +2,9 @@ package lopez.rafael.mobileappws.services.impl;
 
 import lopez.rafael.mobileappws.data.entities.User;
 import lopez.rafael.mobileappws.data.repositories.UserRepository;
+import lopez.rafael.mobileappws.exceptions.UserServiceException;
 import lopez.rafael.mobileappws.models.dtos.UserDto;
+import lopez.rafael.mobileappws.models.responses.ErrorMesages;
 import lopez.rafael.mobileappws.services.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +72,24 @@ public class UserServiceImpl implements UserService {
         }
 
         BeanUtils.copyProperties(user, returnValue);
+
+        return returnValue;
+    }
+
+    @Override
+    public UserDto updateUser(String userId, UserDto user) {
+        UserDto returnValue = new UserDto();
+        User oldUser = userRepository.findByUserId(userId);
+
+        if(oldUser == null){
+            throw new UserServiceException(ErrorMesages.NO_RECORD_FOUND.getErrorMessage());
+        }
+
+        oldUser.setFirstName(user.getFirstName());
+        oldUser.setLastName(user.getLastName());
+
+        User updateUser = userRepository.save(oldUser);
+        BeanUtils.copyProperties(updateUser, returnValue);
 
         return returnValue;
     }
