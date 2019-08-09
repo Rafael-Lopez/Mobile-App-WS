@@ -2,6 +2,7 @@ package lopez.rafael.mobileappws.controllers;
 
 import lopez.rafael.mobileappws.models.dtos.UserDto;
 import lopez.rafael.mobileappws.models.requests.UserDetailsRequestModel;
+import lopez.rafael.mobileappws.models.responses.ErrorMesages;
 import lopez.rafael.mobileappws.models.responses.UserRest;
 import lopez.rafael.mobileappws.services.impl.UserServiceImpl;
 import org.springframework.beans.BeanUtils;
@@ -32,7 +33,10 @@ public class UserController {
 
     @PostMapping( consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE },
                   produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE } )
-    public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails){
+    public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) throws Exception{
+        if(userDetails.getFirstName().isEmpty()) {
+                throw new Exception(ErrorMesages.MISSING_REQUIRED_FIELD.getErrorMessage());
+        }
 
         UserDto userDto = new UserDto();
         BeanUtils.copyProperties(userDetails, userDto);
