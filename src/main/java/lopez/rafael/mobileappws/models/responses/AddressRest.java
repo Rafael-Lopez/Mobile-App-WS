@@ -1,6 +1,8 @@
 package lopez.rafael.mobileappws.models.responses;
 
-public class AddressRest {
+import org.springframework.hateoas.ResourceSupport;
+
+public class AddressRest extends ResourceSupport {
     private String addressId;
     private String city;
     private String country;
