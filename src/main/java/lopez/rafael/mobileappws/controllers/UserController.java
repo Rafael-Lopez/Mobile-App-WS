@@ -5,6 +5,7 @@ import lopez.rafael.mobileappws.models.requests.UserDetailsRequestModel;
 import lopez.rafael.mobileappws.models.responses.*;
 import lopez.rafael.mobileappws.exceptions.UserServiceException;
 import lopez.rafael.mobileappws.services.impl.UserServiceImpl;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -41,8 +42,8 @@ public class UserController {
                 throw new UserServiceException(ErrorMesages.MISSING_REQUIRED_FIELD.getErrorMessage());
         }
 
-        UserDto userDto = new UserDto();
-        BeanUtils.copyProperties(userDetails, userDto);
+        ModelMapper modelMapper = new ModelMapper();
+        UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
         UserDto createdUser = userService.createUser(userDto);
         UserRest returnValue = new UserRest();
