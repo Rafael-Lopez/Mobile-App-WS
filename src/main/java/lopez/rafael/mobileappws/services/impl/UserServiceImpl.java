@@ -3,9 +3,11 @@ package lopez.rafael.mobileappws.services.impl;
 import lopez.rafael.mobileappws.data.entities.User;
 import lopez.rafael.mobileappws.data.repositories.UserRepository;
 import lopez.rafael.mobileappws.exceptions.UserServiceException;
+import lopez.rafael.mobileappws.models.dtos.AddressDto;
 import lopez.rafael.mobileappws.models.dtos.UserDto;
 import lopez.rafael.mobileappws.models.responses.ErrorMesages;
 import lopez.rafael.mobileappws.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,16 +40,20 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Record already exists!");
         }
 
-        User user = new User();
-        BeanUtils.copyProperties(userDto, user);
+        for(AddressDto address : userDto.getAddresses()){
+            address.setUserDetails(userDto);
+            address.setAddressId(UUID.randomUUID().toString());
+        }
+
+        ModelMapper modelMapper = new ModelMapper();
+        User user = modelMapper.map(userDto, User.class);
 
         user.setUserId(UUID.randomUUID().toString());
         user.setEncryptedPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
 
         user = userRepository.save(user);
 
-        UserDto result = new UserDto();
-        BeanUtils.copyProperties(user, result);
+        UserDto result = modelMapper.map(user, UserDto.class);
 
         return result;
     }

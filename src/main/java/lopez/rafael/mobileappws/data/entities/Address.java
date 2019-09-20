@@ -12,7 +12,7 @@ public class Address implements Serializable {
     @Id
     @GeneratedValue
     private long id;
-    @Column(length = 30, nullable = false)
+    @Column(length = 40, nullable = false)
     private String addressId;
     @Column(length = 15, nullable = false)
     private String city;
@@ -26,7 +26,7 @@ public class Address implements Serializable {
     private String type;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserDto userDetails;
+    private User userDetails;
 
     public long getId() {
         return id;
@@ -84,11 +84,11 @@ public class Address implements Serializable {
         this.type = type;
     }
 
-    public UserDto getUserDetails() {
+    public User getUserDetails() {
         return userDetails;
     }
 
-    public void setUserDetails(UserDto userDetails) {
+    public void setUserDetails(User userDetails) {
         this.userDetails = userDetails;
     }
 }
