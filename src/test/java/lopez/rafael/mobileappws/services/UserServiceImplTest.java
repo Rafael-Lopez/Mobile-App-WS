@@ -4,23 +4,28 @@ import lopez.rafael.mobileappws.data.entities.User;
 import lopez.rafael.mobileappws.data.repositories.UserRepository;
 import lopez.rafael.mobileappws.models.dtos.UserDto;
 import lopez.rafael.mobileappws.services.impl.UserServiceImpl;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.anyString;
 
-@RunWith(MockitoJUnitRunner.class)
 public class UserServiceImplTest {
     @Mock
     UserRepository userRepository;
 
     @InjectMocks
     UserServiceImpl userService;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public final void testGetUser() {
@@ -37,5 +42,12 @@ public class UserServiceImplTest {
 
         assertNotNull(userDto);
         assertEquals("Rafael", userDto.getFirstName());
+    }
+
+    @Test
+    public void testGetUserNotFoundException() {
+        when(userRepository.findByEmail(anyString())).thenReturn(null);
+
+        assertThrows(UsernameNotFoundException.class, () -> { userService.getUser("test@test.com"); } );
     }
 }
